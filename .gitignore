@@ -16,3 +16,10 @@ tmp/
 node_modules/
 __pycache__/
 *.pyc
+
+# Local configuration and build artifacts
+/skills/brain-dump/vault.conf
+/skills/brain-dump/projects.map
+/dist/
+.nahicore-install.json
+.nahicore-backups/

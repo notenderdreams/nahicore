@@ -1,0 +1,4 @@
+interface:
+  display_name: "Liquid Metal"
+  short_description: "Reuse one external script for session scratch tooling"
+  default_prompt: "Use $liquid-metal for dynamic scratch tooling during this session."

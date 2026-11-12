@@ -1,0 +1,4 @@
+# Copy to ~/.config/nahicore/brain-dump/vault.conf and edit.
+# Values are literal text, not shell commands. Spaces need no escaping.
+VAULT_PATH=/absolute/path/to/your/Obsidian Vault
+DEFAULT_PROJECTS_DIR=Projects

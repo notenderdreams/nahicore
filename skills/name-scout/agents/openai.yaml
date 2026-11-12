@@ -1,0 +1,4 @@
+interface:
+  display_name: "Name Scout"
+  short_description: "Generate project names and verify registry/domain collisions"
+  default_prompt: "Use $name-scout to generate and verify names for this project."

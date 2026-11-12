@@ -1,0 +1,4 @@
+interface:
+  display_name: "Notex"
+  short_description: "Turn slides into complete TeXifier study notes"
+  default_prompt: "Use $notex to turn these slides into complete TeXifier-compatible study notes."

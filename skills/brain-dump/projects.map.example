@@ -1,0 +1,3 @@
+# Optional mappings; paths are relative to VAULT_PATH.
+# Copy to ~/.config/nahicore/brain-dump/projects.map and edit.
+example-project|Projects/example-project

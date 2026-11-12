@@ -1,0 +1,4 @@
+interface:
+  display_name: "Brain Dump"
+  short_description: "Save codebase explanations as indexed study notes"
+  default_prompt: "Use $brain-dump to explain this codebase topic and save an indexed note."
