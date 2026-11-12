@@ -1,166 +1,179 @@
-# nahicore ⚡
+# nahicore
 
-> **A curated collection of bespoke skills, workflows, and soft-tooling for AI coding agents.**  
-> Built for Antigravity, Claude Code, Zed, Cursor, Codex, and modern agentic pair-programming environments.
+A collection of reusable agent skills for studying, documenting code, naming
+projects, and scratch tooling. Each skill is a self-contained folder with
+instructions, optional helpers, and Codex UI metadata. Licensed under MIT.
 
----
+## Skills
 
-## What is `nahicore`?
+| Skill | Purpose | Requirements |
+| --- | --- | --- |
+| [Notex](skills/notex/SKILL.md) | Turn slides and PDFs into complete study notes in TeXifier-compatible LaTeX, with worked exercises and source coverage. | An agent able to read the source documents; TeXifier to typeset the output. |
+| [Brain Dump](skills/brain-dump/SKILL.md) | Save detailed codebase explanations to Obsidian or a local `.dead-brain/` folder and maintain an index. | Python 3.10+ and Bash; an Obsidian vault is optional. |
+| [Name Scout](skills/name-scout/SKILL.md) | Generate context-driven project names and check registry, domain, and public-name collisions. | Python 3.10+; network access for live lookups. |
+| [Liquid Metal](skills/liquid-metal/SKILL.md) | Reuse one persistent script outside the repository for dynamic scratch tooling during a session. | A runtime appropriate to the task. |
 
-**`nahicore`** is a unified agent skills repository and plugin suite created by [Sajid Al Nahian](https://github.com/notenderdreams). Instead of distributing isolated, fragmented single-skill repositories, `nahicore` packages high-discipline agent behaviors, ephemeral execution runtimes, and developer ergonomics into a single cohesive toolkit.
+## Install
 
----
-
-## Included Skills
-
-| Skill | Command | Description |
-| :--- | :--- | :--- |
-| [**Liquid Metal**](#featured-skill-liquid-metal-) | `/liquid-metal` | **Persistent, single-file soft tooling.** Designates exactly ONE scratch file outside the repository, shape-shifting in place whenever dynamic computation is needed. Zero repo pollution, no inline quoting hell. |
-
-*(More skills and agent workflows are continually added to `skills/`)*.
-
----
-
-## Featured Skill: Liquid Metal 🪞
-
-### The Problem
-
-When coding agents need dynamic computation—parsing logs, transforming complex JSON, inspecting ASTs, or orchestrating pipelines—they usually default to one of two flawed patterns:
-
-1. **Repository Pollution**: Generating multiple temporary scripts (`test_parse.py`, `temp_extract.ts`, `script1.sh`) inside your project directory, dirtying `git status` and risking accidental commits.
-2. **Inline Execution Quoting Hell**: Running ad-hoc one-liners via `python -c "..."` or multiline heredocs inside bash tools, which regularly fail on complex escaping, quotes, indentation, and nested braces.
-
----
-
-### The Solution
-
-Like liquid metal that reforms into whatever tool is needed at the moment, **Liquid Metal** forces the agent into a disciplined workflow:
-
-* **One File to Rule Them All**: Exactly **ONE** persistent script file is designated outside the repository (in the session scratch directory, e.g. `<scratch>/liquid_metal.py`).
-* **Shape-Shift in Place**: Whenever dynamic logic or a helper tool is needed, the agent completely overwrites this single file with the new code.
-* **Native Runner Execution**: The script is executed directly with its runtime (`python3`, `bun`, `node`, `bash`)—clean, reliable, and unpolluted.
-* **Zero Git Dirt**: Your project tree stays 100% clean.
-
-```
-                  ┌─────────────────────────────────┐
-                  │  Need dynamic utility or tool   │
-                  └────────────────┬────────────────┘
-                                   │
-                                   ▼
-        ┌─────────────────────────────────────────────────────┐
-        │ Overwrite the SINGLE persistent script file:        │
-        │ `<scratch>/liquid_metal.<ext>`                      │
-        └──────────────────────────┬──────────────────────────┘
-                                   │
-                                   ▼
-        ┌─────────────────────────────────────────────────────┐
-        │ Execute the file via native runner:                 │
-        │ `python3 <scratch>/liquid_metal.py`                 │
-        └──────────────────────────┬──────────────────────────┘
-                                   │
-                                   ▼
-        ┌─────────────────────────────────────────────────────┐
-        │ Read stdout / results and proceed                   │
-        │ (File remains ready to be reshaped for next task)   │
-        └─────────────────────────────────────────────────────┘
-```
-
-#### Supported Runtimes
-
-| Language | Extension | Default Runner | Use Case |
-| :--- | :--- | :--- | :--- |
-| **Python** | `.py` | `python3 <path>` / `uv run <path>` | Data parsing, AST analysis, math, APIs |
-| **TypeScript** | `.ts` | `bun run <path>` / `npx tsx <path>` | Type checking, frontend transformations |
-| **JavaScript** | `.js` | `node <path>` / `bun <path>` | Quick Node utilities, package testing |
-| **Bash** | `.sh` | `bash <path>` | System orchestration, multi-pipeline flows |
-
----
-
-## Repository Layout
-
-```text
-nahicore/
-├── .gitignore
-├── install.sh                  # Multi-target installer (Antigravity plugin & agent skills)
-├── LICENSE                     # MIT License
-├── README.md                   # nahicore suite documentation
-├── plugin.json                 # Antigravity plugin manifest (name: "nahicore")
-└── skills/
-    └── liquid-metal/
-        └── SKILL.md            # Canonical skill definition for Liquid Metal
-```
-
----
-
-## Installation
-
-### Option 1: Installer Script (Recommended)
-
-Clone the repository and run the installer:
+Requires **Python 3.10+**. Bash is optional for the installer wrapper. Clone this
+repository or extract a release archive, then run:
 
 ```bash
 git clone https://github.com/notenderdreams/nahicore.git
 cd nahicore
 
-# Install globally to ~/.gemini/config/plugins/nahicore and ~/.agents/skills/
-./install.sh
+# Preview installation into ~/.agents/skills.
+python3 scripts/install.py --dry-run
 
-# Or create symlinks for live development (recommended):
-./install.sh --symlink
+# Install all four skills.
+python3 scripts/install.py
 
-# Or install member skills locally to the current project (.agents/skills/):
-./install.sh --project
+# Install only Notex into ~/.codex/skills.
+python3 scripts/install.py --target codex --skill notex
 ```
 
-### Option 2: Manual Installation
+The shell wrapper accepts the same options: `bash install.sh --help`.
+No dependencies are downloaded, application settings changed, or plugins registered.
 
-**Antigravity (Global Plugin):**
+### Destinations
+
+| Option | Skills directory |
+| --- | --- |
+| `--target agents` (default), or `--global` | `~/.agents/skills` |
+| `--target codex` | `~/.codex/skills` |
+| `--target claude` | `~/.claude/skills` |
+| `--target project`, or `--project` | `.agents/skills` in the current directory |
+| `--dest /some/path` | The exact custom directory; overrides `--target` |
+
+These are destination presets. Skill discovery and invocation depend on the
+application you use; no universal application compatibility is claimed.
+Run `python3 /path/to/nahicore/scripts/install.py --project` **from the project
+that should receive the skills**. The installer never searches for a project root.
+
+### Select, update, or link skills
+
 ```bash
-ln -s "$(pwd)" ~/.gemini/config/plugins/nahicore
+python3 scripts/install.py --list
+python3 scripts/install.py --skill notex --skill brain-dump
+python3 scripts/install.py --target codex --skill notex --symlink
 ```
 
-**Agent Ecosystem (`~/.agents/skills`):**
+Copy installation is the default. Rerun the same command to update an unchanged
+managed installation. Symlinks point to this checkout and follow its edits;
+keep the checkout in place. Existing links to the same source can be adopted
+with `--symlink`. Use `--force` to switch an existing source link to a copy.
+
+The installer records ownership in `.nahicore-install.json` in the destination.
+Unowned or locally modified skill folders cause a refusal before any selected
+skill is changed. To replace one while preserving its contents:
+
 ```bash
-mkdir -p ~/.agents/skills/liquid-metal
-ln -s "$(pwd)/skills/liquid-metal/SKILL.md" ~/.agents/skills/liquid-metal/SKILL.md
+python3 scripts/install.py --target codex --skill notex --force
 ```
 
----
+`--force` moves conflicting content into `.nahicore-backups/<id>/<skill>` and
+prints its path. Backups are retained for manual recovery. Restore one by moving
+the current skill aside and moving the backed-up folder to its original location.
+An installation failure can leave earlier skills in the selected batch updated;
+each completed skill is recorded separately. Do not run concurrent installers
+against the same destination.
 
-## Usage
+### Uninstall
 
-In your agent chat or terminal prompt:
+Use the same destination as installation:
+
+```bash
+python3 scripts/install.py --target codex --skill notex --uninstall
+python3 scripts/install.py --target agents --uninstall --dry-run
+```
+
+Without `--skill`, uninstall selects only entries in that destination's ownership
+receipt. Other skills are preserved. Modified installations require `--force`,
+which backs them up before removal. Symlink uninstall removes the link and keeps
+the source. Receipts, backups, and external Brain Dump configuration remain.
+Older installations without receipts are treated as unowned; use `--force`
+to migrate them with backups. No other applications are reinstalled automatically.
+
+## Use
+
+For an agent that supports `$skill` invocation:
 
 ```text
-/liquid-metal
+$notex Turn these lecture slides into complete study notes.
+$brain-dump --local Explain how the parser handles error recovery.
+$name-scout Find names for this project and check likely collisions.
+$liquid-metal Use one external scratch script during this session.
 ```
 
-Or mention it directly:
-> *"Use liquid-metal for any helper scripts needed during this session."*
+Other agents may expose skills through slash commands or their own interface.
+Refresh the agent's skill discovery or start a new session after installation.
 
-The agent will immediately restrict all helper code to the single external persistent file.
+### Notex
 
----
+Notex preserves slide order, definitions, numbers, examples, quotations, diagrams,
+and references. It labels derived solutions and source discrepancies, includes
+quizzes and worked exercises, and checks every source page for coverage.
+It prepares standalone `.tex` source for TeXifier's built-in TexpadTeX compiler
+and performs source checks without compiling unless explicitly asked to compile.
 
-## Adding New Skills to `nahicore`
+### Brain Dump configuration
 
-To add a new skill to the collection:
+Local mode needs no vault setup:
 
-1. Create a new directory under `skills/<your-skill-name>/`.
-2. Add a `SKILL.md` with standard YAML frontmatter:
-   ```markdown
-   ---
-   name: your-skill-name
-   description: Detailed explanation of when the skill activates and what it does.
-   ---
+```bash
+bash skills/brain-dump/scripts/resolve_target.sh --local
+```
 
-   # Your Skill Title
-   ...
-   ```
-3. Run `./install.sh --symlink` to immediately make the new skill available across your agent environments.
+Run the resolver from the project being documented. It creates `.dead-brain/`
+and adds that folder to the project's `.gitignore`.
 
----
+For Obsidian, create a private configuration:
+
+```bash
+mkdir -p ~/.config/nahicore/brain-dump
+cp skills/brain-dump/vault.conf.example ~/.config/nahicore/brain-dump/vault.conf
+# Edit VAULT_PATH in the copied file before using vault mode.
+```
+
+Optionally copy `projects.map.example` to `projects.map` in the same directory.
+Mappings are `project-name|relative/path/inside/vault`; names match literally.
+Values are plain text, never executed. Spaces need no shell escaping.
+New mappings are saved outside the installed skill.
+
+`XDG_CONFIG_HOME` changes the configuration root. `NAHICORE_CONFIG_DIR` selects
+the `nahicore` configuration directory itself; the resolver appends `brain-dump`.
+`NAHICORE_VAULT_PATH` overrides the vault value in an existing configuration.
+Legacy private files inside the skill remain readable but are excluded from
+copy installations and release packages. Move any local customizations to the
+user configuration directory before upgrading an old installation.
+
+### Name Scout helper
+
+```bash
+python3 skills/name-scout/scripts/check_names.py 'My Project' --checks npm pypi domains
+python3 skills/name-scout/scripts/check_names.py 'First Name' 'Second Name' --json
+```
+
+The helper queries public services; `GITHUB_TOKEN` is optional for GitHub API
+rate limits. Results are evidence at check time, not a registration guarantee.
+
+## Development and releases
+
+```bash
+python3 scripts/validate.py
+python3 -m unittest discover -s tests -v
+python3 scripts/build_release.py
+```
+
+The archive and SHA-256 checksum are written to `dist/`. Packaging is independent
+of Git tracking state and excludes private configuration and caches. CI runs
+validation and tests on Linux and macOS and uploads a downloadable archive.
+It does not publish a GitHub release.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md), [the release guide](docs/releasing.md),
+and [CHANGELOG.md](CHANGELOG.md). The root `plugin.json` is legacy catalog
+metadata; the supported distribution is the `skills/` collection and installer.
 
 ## License
 
-[MIT](LICENSE) © 2026 [Nahian](https://github.com/notenderdreams)
+[MIT](LICENSE) © 2026 Nahian (notenderdreams).

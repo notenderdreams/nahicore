@@ -1,0 +1,4 @@
+* text=auto eol=lf
+skills/brain-dump/vault.conf export-ignore
+skills/brain-dump/projects.map export-ignore
+dist/ export-ignore
