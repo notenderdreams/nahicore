@@ -1,10 +1,13 @@
 # Releasing nahicore
 
 The distribution is a collection of skill folders, not a hosted service.
-`plugin.json` is retained as legacy catalog metadata; the installer does not
-register plugins or change application settings.
+`.claude-plugin/` makes the repository a Claude Code plugin and marketplace;
+the installer itself does not register plugins or change application settings.
 
-1. Update `VERSION` and `CHANGELOG.md`. The first packaged version is `0.1.0`.
+1. Update `VERSION`, the `version` fields in `.claude-plugin/plugin.json` and
+   `.claude-plugin/marketplace.json`, and `CHANGELOG.md`. `scripts/validate.py`
+   rejects mismatched versions. Claude Code users only receive an update when
+   the plugin version changes. The first packaged version is `0.1.0`.
 2. Run the checks in [CONTRIBUTING.md](../CONTRIBUTING.md).
 3. Inspect `dist/nahicore-<version>.tar.gz` and its adjacent `.sha256` file.
    The builder excludes private `vault.conf` and `projects.map` files, caches,

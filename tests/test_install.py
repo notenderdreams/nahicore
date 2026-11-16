@@ -77,7 +77,7 @@ class InstallerTests(unittest.TestCase):
 
     def test_target_presets_and_shell_entrypoint(self):
         env = dict(os.environ, HOME=str(self.base))
-        for target, suffix in [('agents', '.agents/skills'), ('codex', '.codex/skills'), ('claude', '.claude/skills'), ('project', '.agents/skills')]:
+        for target, suffix in [('agents', '.agents/skills'), ('codex', '.codex/skills'), ('claude', '.claude/skills'), ('claude-project', '.claude/skills'), ('project', '.agents/skills')]:
             result = subprocess.run(['bash', str(ROOT / 'install.sh'), '--target', target, '--skill', 'notex'],
                                     cwd=self.base, env=env, capture_output=True, text=True)
             self.assertEqual(result.returncode, 0, result.stderr)

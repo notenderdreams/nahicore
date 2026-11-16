@@ -48,7 +48,13 @@ def validate(root=ROOT):
             ast.parse(script.read_text(), filename=str(script))
     for script in [root / 'install.sh', root / 'skills/brain-dump/scripts/resolve_target.sh']:
         subprocess.run(['bash', '-n', str(script)], check=True)
-    json.loads((root / 'plugin.json').read_text())
+    manifest = json.loads((root / '.claude-plugin/plugin.json').read_text())
+    if manifest.get('name') != 'nahicore' or manifest.get('version') != version:
+        raise ValueError('.claude-plugin/plugin.json name or version does not match VERSION')
+    marketplace = json.loads((root / '.claude-plugin/marketplace.json').read_text())
+    entries = {entry.get('name'): entry for entry in marketplace.get('plugins', [])}
+    if entries.get('nahicore', {}).get('source') != './' or entries['nahicore'].get('version') != version:
+        raise ValueError('.claude-plugin/marketplace.json must list nahicore at ./ with the current VERSION')
     print(f'Validated nahicore {version}')
 
 

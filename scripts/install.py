@@ -55,7 +55,7 @@ def save_receipt(destination, records):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--target', choices=['agents', 'codex', 'claude', 'project'], default='agents')
+    parser.add_argument('--target', choices=['agents', 'codex', 'claude', 'claude-project', 'project'], default='agents')
     parser.add_argument('--dest', type=Path, help='Custom skills directory; overrides --target')
     parser.add_argument('--project', action='store_true', help='Alias for --target project')
     parser.add_argument('--global', dest='global_scope', action='store_true', help='Alias for --target agents')
@@ -74,7 +74,8 @@ def main():
         parser.error('--project and --global are mutually exclusive')
     target = 'project' if args.project else 'agents' if args.global_scope else args.target
     destinations = {'agents': Path.home() / '.agents/skills', 'codex': Path.home() / '.codex/skills',
-                    'claude': Path.home() / '.claude/skills', 'project': Path.cwd() / '.agents/skills'}
+                    'claude': Path.home() / '.claude/skills', 'claude-project': Path.cwd() / '.claude/skills',
+                    'project': Path.cwd() / '.agents/skills'}
     destination = (args.dest or destinations[target]).expanduser().absolute()
     receipt = destination / RECEIPT
     records = {}

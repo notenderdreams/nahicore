@@ -15,6 +15,31 @@ instructions, optional helpers, and Codex UI metadata. Licensed under MIT.
 
 ## Install
 
+### Claude Code (plugin)
+
+This repository is a Claude Code plugin and its own marketplace. In Claude Code:
+
+```text
+/plugin marketplace add notenderdreams/nahicore
+/plugin install nahicore@nahicore
+```
+
+On Claude Code 2.1.275 or later, one command does both:
+
+```text
+/plugin install nahicore --marketplace notenderdreams/nahicore
+```
+
+Or from a shell: `claude plugin marketplace add notenderdreams/nahicore`, then
+`claude plugin install nahicore@nahicore`. Run `/reload-plugins` or start a new
+session; the skills appear as `/nahicore:notex`, `/nahicore:brain-dump`,
+`/nahicore:name-scout`, and `/nahicore:liquid-metal`, and Claude also loads them
+automatically when a request matches. Update with `/plugin marketplace update nahicore`.
+To try a local checkout without installing: `claude --plugin-dir /path/to/nahicore`.
+
+### Installer script (Claude Code, Codex, and other agents)
+
+To copy plain skills instead of using the plugin system, use the installer.
 Requires **Python 3.10+**. Bash is optional for the installer wrapper. Clone this
 repository or extract a release archive, then run:
 
@@ -41,7 +66,8 @@ No dependencies are downloaded, application settings changed, or plugins registe
 | --- | --- |
 | `--target agents` (default), or `--global` | `~/.agents/skills` |
 | `--target codex` | `~/.codex/skills` |
-| `--target claude` | `~/.claude/skills` |
+| `--target claude` | `~/.claude/skills` (Claude Code, all projects) |
+| `--target claude-project` | `.claude/skills` in the current directory (Claude Code, this project) |
 | `--target project`, or `--project` | `.agents/skills` in the current directory |
 | `--dest /some/path` | The exact custom directory; overrides `--target` |
 
@@ -93,6 +119,10 @@ which backs them up before removal. Symlink uninstall removes the link and keeps
 the source. Receipts, backups, and external Brain Dump configuration remain.
 Older installations without receipts are treated as unowned; use `--force`
 to migrate them with backups. No other applications are reinstalled automatically.
+
+Do not install the same skills both as the plugin and with `--target claude`;
+Claude Code would list each skill twice. Plain installs are invoked without the
+`nahicore:` prefix, for example `/notex`.
 
 ## Use
 
@@ -171,8 +201,8 @@ validation and tests on Linux and macOS and uploads a downloadable archive.
 It does not publish a GitHub release.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md), [the release guide](docs/releasing.md),
-and [CHANGELOG.md](CHANGELOG.md). The root `plugin.json` is legacy catalog
-metadata; the supported distribution is the `skills/` collection and installer.
+and [CHANGELOG.md](CHANGELOG.md). The Claude Code plugin manifest and
+marketplace live in `.claude-plugin/`; `claude plugin validate .` checks them.
 
 ## License
 

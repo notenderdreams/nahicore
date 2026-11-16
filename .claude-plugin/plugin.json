@@ -1,0 +1,13 @@
+{
+  "name": "nahicore",
+  "version": "0.1.0",
+  "description": "Agent skills for study notes (Notex), codebase deep-dive notes (Brain Dump), project naming with collision checks (Name Scout), and persistent scratch tooling (Liquid Metal).",
+  "author": {
+    "name": "Nahian",
+    "url": "https://github.com/notenderdreams"
+  },
+  "homepage": "https://github.com/notenderdreams/nahicore",
+  "repository": "https://github.com/notenderdreams/nahicore",
+  "license": "MIT",
+  "keywords": ["skills", "latex", "study-notes", "obsidian", "naming", "scratch-tooling"]
+}

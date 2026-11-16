@@ -9,8 +9,8 @@ import tarfile
 
 from validate import ROOT, validate
 
-ROOT_FILES = {'README.md', 'LICENSE', 'VERSION', 'CHANGELOG.md', 'CONTRIBUTING.md', 'install.sh', 'plugin.json', '.gitignore', '.gitattributes'}
-ROOT_DIRS = {'skills', 'scripts', 'tests', 'docs', '.github'}
+ROOT_FILES = {'README.md', 'LICENSE', 'VERSION', 'CHANGELOG.md', 'CONTRIBUTING.md', 'install.sh', '.gitignore', '.gitattributes'}
+ROOT_DIRS = {'.claude-plugin', 'skills', 'scripts', 'tests', 'docs', '.github'}
 PRIVATE = {'vault.conf', 'projects.map', '__pycache__', '.DS_Store'}
 
 
