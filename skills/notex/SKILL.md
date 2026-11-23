@@ -1,19 +1,29 @@
 ---
 name: notex
-description: Create or repair standalone LaTeX documents for TeXifier's built-in TexpadTeX compiler. Use when the user requests TeXifier-compatible documents, complete study notes from slides or PDFs for TeXifier, or reports a TexpadTeX compatibility error.
+description: Create complete, well-organized LaTeX study notes from slides or PDFs, including worked exercises and diagrams, with optional TeXifier compatibility on request. Use when the user wants educational notes from lecture slides, a PDF, or course material, or needs a LaTeX notes document created or repaired.
 ---
 
 # Notex
 
-Target **TeXifier's built-in TexpadTeX typesetter with default settings**. The user's default preference is to receive a complete `.tex` source without compiling it. An explicit request to compile overrides that preference.
+Produce a standalone LaTeX study-notes document. By default, deliver the complete `.tex` source without compiling it. An explicit request to compile overrides that default.
 
-## Compiler compatibility
+## Document setup
 
-- Produce a standalone document using standard LaTeX commands and a small set of supported packages. Keep the built-in fonts and encoding unless the task needs something else.
-- Do not load `microtype`: TeXifier documents that it depends on engine extensions unavailable in TexpadTeX. Do not assume that a package works merely because it is common in pdfLaTeX documents.
-- Avoid requirements for an external TeX installation, pdfLaTeX, XeLaTeX, LuaLaTeX, shell escape, custom fonts, or external bibliography processors. Do not insert engine-selection directives or tell the user to switch away from the built-in compiler.
-- A useful baseline is `article`, `geometry`, `amsmath`, `amssymb`, and `xcolor`. Add packages such as `booktabs`, `tabularx`, `longtable`, `enumitem`, and `hyperref` only as needed. Package availability is not proof of support for every package option.
-- For a package or engine feature whose support is uncertain, consult the official compatibility documentation linked below. Prefer a simpler supported construction when it satisfies the task.
+- Use standard LaTeX commands and a small set of widely supported packages. A useful baseline is `article`, `geometry`, `amsmath`, `amssymb`, and `xcolor`. Add `booktabs`, `tabularx`, `longtable`, `enumitem`, `graphicx`, `tikz`, and `hyperref` only as needed.
+- Keep the document self-contained: no shell escape, custom fonts, or external bibliography processors. Do not load `microtype`.
+- Prefer a simpler construction over an exotic package when it satisfies the task.
+
+## Optional: TeXifier compatibility
+
+Apply this section only when the user asks for TeXifier compatibility (or reports a TexpadTeX error). Otherwise ignore it.
+
+- Target TeXifier's built-in TexpadTeX typesetter with default settings.
+- Do not load `microtype`; TeXifier documents that it needs engine extensions TexpadTeX lacks. Do not assume a common pdfLaTeX package works without checking.
+- Avoid pdfLaTeX/XeLaTeX/LuaLaTeX requirements, shell escape, custom fonts, and external bibliography processors. Do not insert engine-selection directives or tell the user to switch compilers.
+- Package availability is not proof of support for every option. When unsure, check the official docs below and prefer a simpler supported construction.
+- When repairing a TexpadTeX error, inspect the source and any error log, check the docs, and fix the actual source.
+- Describe the file as prepared for TexpadTeX, not as verified, unless it was compiled.
+- Docs: [package coverage](https://www.texifier.com/docs/tutorials/tex/typesetters/texpadtex/package-coverage), [package options](https://www.texifier.com/docs/tutorials/tex/typesetters/texpadtex/package-options).
 
 ## Notes from slides or PDFs
 
@@ -25,7 +35,8 @@ Treat the notes as a **complete study replacement for the supplied slides**, unl
 - Preserve every substantive point, definition, qualification, number, formula, assumption, unit, example, quotation, and reference. Keep exact wording for quotations; preserve technical meaning and detail when rewriting other text.
 - Follow slide order. Merge consecutive slides that continue the same topic under one heading, using clean sections, subsections, lists, and tables. Keep later revisits in their original position with cross-references when useful.
 - Consolidate exact duplicates and repeated roadmaps only when no information is lost. Preserve any new detail, changed value, or differing wording that changes the meaning. A roadmap mentioning an absent topic is not permission to invent that topic.
-- Explain the relationships actually shown in diagrams and charts, retaining labels, directions, values, legends, and conditions. Reproduce or include the figure when prose alone would lose information.
+- Explain the relationships actually shown in diagrams and charts, retaining labels, directions, values, legends, and conditions.
+- Diagrams: first try to recreate each diagram in LaTeX (TikZ, `tabular`, or `array`), keeping every label, arrow, value, and legend. If it cannot be reproduced faithfully, crop the diagram from the slide and include it with `\includegraphics`, with a caption naming its source slide. Supply the image files alongside the `.tex` source.
 - Turn each meme or cartoon slide into one line stating its instructional point. Preserve any substantive facts or labels it also contains; mark an uncertain interpretation as such.
 - Include the source's complete references list and retain inline attributions, URLs, and citation details as supplied. Mark incomplete citations rather than inventing bibliographic details.
 
@@ -44,19 +55,14 @@ Treat the notes as a **complete study replacement for the supplied slides**, unl
 
 ### Study layout and coverage check
 
-Keep styling minimal: readable margins, conventional headings, and restrained color for key terms and discrepancy notes. Use tables for comparisons and lists for parallel points without dropping qualifications. Keep figures self-contained when practical; supply any required assets alongside the source.
+Keep styling minimal: readable margins, conventional headings, and restrained color for key terms and discrepancy notes. Use tables for comparisons and lists for parallel points without dropping qualifications. Give every figure a caption and a source slide reference.
 
 Record source slide or page ranges beside headings or in a compact coverage guide. Before delivery, compare the notes against every source page: each must map to a notes location, an identified duplicate, a one-line meme interpretation, or an explicit unreadable-content gap. Check exercises and references separately so they are not omitted. Use as many pages as the full content requires.
 
 ## Verification and delivery
 
-Review the complete source for balanced braces and environments, escaped special characters, defined commands, consistent math units, table structure, and missing dependencies. Under the default no-compilation preference, perform source checks only: do not invoke a TeX engine, rendering preview, or any command that triggers compilation.
+Review the complete source for balanced braces and environments, escaped special characters, defined commands, consistent math units, table structure, missing packages, and that every included image file exists at the referenced path. Under the default, do not compile; perform source checks only.
 
-When repairing a compatibility error, inspect the document and any available error log, check official documentation, and modify the actual source. Ask for the error text only if needed after examining available evidence.
+When repairing a compile error, inspect the document and any available error log, then fix the actual source. Ask for the error text only if needed after examining available evidence.
 
-Deliver a clickable link to the `.tex` file. State whether it was compiled. Source checks do not establish successful compilation; describe the file as prepared for TexpadTeX rather than claiming verified compilation without evidence.
-
-## Official references
-
-- [TexpadTeX package coverage](https://www.texifier.com/docs/tutorials/tex/typesetters/texpadtex/package-coverage): check package restrictions and known unsupported features.
-- [TexpadTeX package options](https://www.texifier.com/docs/tutorials/tex/typesetters/texpadtex/package-options): consult when an option may select an incompatible driver.
+Deliver a clickable link to the `.tex` file (and any image files). State whether it was compiled. Source checks do not establish successful compilation; do not claim it without evidence.

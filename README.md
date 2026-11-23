@@ -8,7 +8,7 @@ instructions, optional helpers, and Codex UI metadata. Licensed under MIT.
 
 | Skill | Purpose | Requirements |
 | --- | --- | --- |
-| [Notex](skills/notex/SKILL.md) | Turn slides and PDFs into complete study notes in TeXifier-compatible LaTeX, with worked exercises and source coverage. | An agent able to read the source documents; TeXifier to typeset the output. |
+| [Notex](skills/notex/SKILL.md) | Turn slides and PDFs into complete LaTeX study notes, with worked exercises, diagrams, and source coverage. | An agent able to read the source documents; a LaTeX editor to typeset the output. |
 | [Brain Dump](skills/brain-dump/SKILL.md) | Save detailed codebase explanations to Obsidian or a local `.dead-brain/` folder and maintain an index. | Python 3.10+ and Bash; an Obsidian vault is optional. |
 | [Name Scout](skills/name-scout/SKILL.md) | Generate context-driven project names and check registry, domain, and public-name collisions. | Python 3.10+; network access for live lookups. |
 | [Liquid Metal](skills/liquid-metal/SKILL.md) | Reuse one persistent script outside the repository for dynamic scratch tooling during a session. | A runtime appropriate to the task. |
@@ -143,8 +143,10 @@ Refresh the agent's skill discovery or start a new session after installation.
 Notex preserves slide order, definitions, numbers, examples, quotations, diagrams,
 and references. It labels derived solutions and source discrepancies, includes
 quizzes and worked exercises, and checks every source page for coverage.
-It prepares standalone `.tex` source for TeXifier's built-in TexpadTeX compiler
-and performs source checks without compiling unless explicitly asked to compile.
+It recreates diagrams in LaTeX where possible and otherwise crops them from the
+slides. It prepares standalone `.tex` source and performs source checks without
+compiling unless explicitly asked to compile. Ask for TeXifier compatibility to
+apply TexpadTeX package restrictions; otherwise they are not applied.
 
 ### Brain Dump configuration
 
