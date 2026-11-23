@@ -1,0 +1,4 @@
+interface:
+  display_name: "Release Man"
+  short_description: "Interview you, then build a release pipeline"
+  default_prompt: "Use $release-man to add or fix the release pipeline for this repo."

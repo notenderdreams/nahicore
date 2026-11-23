@@ -11,6 +11,7 @@ instructions, optional helpers, and Codex UI metadata. Licensed under MIT.
 | [Notex](skills/notex/SKILL.md) | Turn slides and PDFs into complete LaTeX study notes, with worked exercises, diagrams, and source coverage. | An agent able to read the source documents; a LaTeX editor to typeset the output. |
 | [Brain Dump](skills/brain-dump/SKILL.md) | Save detailed codebase explanations to Obsidian or a local `.dead-brain/` folder and maintain an index. | Python 3.10+ and Bash; an Obsidian vault is optional. |
 | [Name Scout](skills/name-scout/SKILL.md) | Generate context-driven project names and check registry, domain, and public-name collisions. | Python 3.10+; network access for live lookups. |
+| [Release Man](skills/release-man/SKILL.md) | Interview you, then add or fix a release pipeline (cargo-dist, GoReleaser, release-plz, changesets, PyPI, Docker). | Git repo; the chosen release tool is optional for dry runs. |
 | [Liquid Metal](skills/liquid-metal/SKILL.md) | Reuse one persistent script outside the repository for dynamic scratch tooling during a session. | A runtime appropriate to the task. |
 
 ## Install
@@ -33,7 +34,7 @@ On Claude Code 2.1.275 or later, one command does both:
 Or from a shell: `claude plugin marketplace add notenderdreams/nahicore`, then
 `claude plugin install nahicore@nahicore`. Run `/reload-plugins` or start a new
 session; the skills appear as `/nahicore:notex`, `/nahicore:brain-dump`,
-`/nahicore:name-scout`, and `/nahicore:liquid-metal`, and Claude also loads them
+`/nahicore:name-scout`, `/nahicore:liquid-metal`, and `/nahicore:release-man`, and Claude also loads them
 automatically when a request matches. Update with `/plugin marketplace update nahicore`.
 To try a local checkout without installing: `claude --plugin-dir /path/to/nahicore`.
 
@@ -50,7 +51,7 @@ cd nahicore
 # Preview installation into ~/.agents/skills.
 python3 scripts/install.py --dry-run
 
-# Install all four skills.
+# Install all skills.
 python3 scripts/install.py
 
 # Install only Notex into ~/.codex/skills.
@@ -133,6 +134,7 @@ $notex Turn these lecture slides into complete study notes.
 $brain-dump --local Explain how the parser handles error recovery.
 $name-scout Find names for this project and check likely collisions.
 $liquid-metal Use one external scratch script during this session.
+$release-man Add a release pipeline to this repo.
 ```
 
 Other agents may expose skills through slash commands or their own interface.
