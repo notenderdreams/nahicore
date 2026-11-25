@@ -36,7 +36,7 @@ class InstallerTests(unittest.TestCase):
     def test_all_skills_and_private_config_exclusion(self):
         self.run_cli()
         receipt = json.loads((self.dest / '.nahicore-install.json').read_text())
-        self.assertEqual(set(receipt['skills']), {'notex', 'brain-dump', 'name-scout', 'liquid-metal', 'release-man'})
+        self.assertEqual(set(receipt['skills']), {'notex', 'brain-dump', 'name-scout', 'liquid-metal', 'release-man', 'chop-chop'})
         self.assertFalse((self.dest / 'brain-dump/vault.conf').exists())
         self.assertFalse((self.dest / 'brain-dump/projects.map').exists())
         self.assertTrue((self.dest / 'brain-dump/vault.conf.example').exists())

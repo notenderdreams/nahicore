@@ -1,0 +1,4 @@
+interface:
+  display_name: "Chop Chop"
+  short_description: "Split god files and dedupe copy-pasted components"
+  default_prompt: "Use $chop-chop to break up the oversized files in this repo into proper modules."

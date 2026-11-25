@@ -23,3 +23,4 @@ __pycache__/
 /dist/
 .nahicore-install.json
 .nahicore-backups/
+.agents/
